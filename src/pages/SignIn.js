@@ -1,37 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import {
-  Layout,
-  Menu,
-  Button,
-  Row,
-  Col,
-  Typography,
-  Form,
-  Input,
-  Switch,
-} from "antd";
+import { Layout, Menu, Button, Row, Col, Typography, Form, Input, Switch} from "antd";
 import signinbg from "../assets/images/panner.png";
 import { PinteredOutLined, Home } from '../components/Icons';
 import { DribbbleOutlined, TwitterOutlined, InstagramOutlined, GithubOutlined } from "@ant-design/icons";
-import axios from "axios";
+import { api } from "../services/axios";
 // function onChange(checked) {
 //   console.log(`switch to ${checked}`);
 // }
-
-// async function login() {
-//   console.warn(email, password)
-//   let item = { email, password };
-//   let result = await fetch("https://iclean.azurewebsites.net/api/v1/auth", {
-//     method: 'POST',
-
-//   })
-// }
-// const { Title } = Typography;
-// const { Header, Footer, Content } = Layout;
-
-// const [email, setEmail] = useState('');
-// const [password, setPassword] = useState('');
 
 const template = [
   <svg
@@ -119,224 +95,161 @@ const SignIn = () => {
   const { Title } = Typography;
   const { Header, Footer, Content } = Layout;
 
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // render() {
-    const onFinish = (values) => {
-      console.log("Success:", values);
-    };
+  const onFinish = (values) => {
+    console.log("Success:", values);
+  };
 
-    const onFinishFailed = (errorInfo) => {
-      console.log("Failed:", errorInfo);
-    };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
-    // function onChange(checked) {
-    //   console.log(`switch to ${checked}`);
-    // }
+  const history = useHistory();
 
-    const history = useHistory();
-    // useEffect(() => {
-    //   if (localStorage.getItem('admin')) {
-    //     history.push("/dashboard")
-    //   }
-    // }, [])
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState("");
 
-    // const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const handleEmail = (e) => {
-      setEmail(e.target.value)
-    }
-    
-    const handlePassword = (e) => {
-      setPassword(e.target.value)
-    }
-
-    const handleApi = () => {
-      console.log({ email, password})
-      axios.post('https://iclean.azurewebsites.net/api/v1/auth', {
-        email: email,
-        password: password
+  const handleApi = (e) => {
+    //ngăn reload trang
+    e.preventDefault();
+    api
+      .post(`/api/v1/auth`,
+        {
+          username: email,
+          password: password
+        }
+      )
+      .then((result) => {
+        if (result.data?.data?.userInformationDto) {
+          console.log("Đăng nhập thành công ne:", result.data.data.userInformationDto);
+          const account = result.data?.data?.userInformationDto;
+          // const { account_id } = account;
+          // localStorage.setItem('account_id', account_id);
+          const {roleName} = result.data.data.userInformationDto;
+          if (roleName === "admin" || roleName === "manager") {
+            window.location.href = "/dashboard";
+          } else {
+            console.error("Bạn không có quyền truy cập vào trang này");
+            setError("Bạn không có quyền truy cập vào trang này");
+            alert('Tài khoản bạn không có quyền truy cập vào trang này!!');
+          }
+        } else {
+          console.error("Account information is missing.");
+          setError("Đăng nhập không thành công");
+        }
       })
-      .then(result => {
-        console.log( result.data )
-        // alert ('Đăng Nhập Thành Công')
-        localStorage.setItem('token', result.data.token)
-        history.pushState("/dashboard")
-      })
-      .catch(error => {
-        alert('Thất Bại Rồii')
-        console.log(error)
-      })
-    }
+      .catch((error) => {
+        console.error("Đăng nhập không thành công:", error);
+        setError("Đăng nhập không thành công");
+        alert('Đăng nhập thất bại rồi!');
 
-    // async function login() {
-    //   console.warn(email, password)
-    //   let item = { email, password };
-    //   let result = await fetch("https://iclean.azurewebsites.net/api/v1/auth", {
-    //     method: 'POST',
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       "accept": "/"
-    //     },
-    //     body: JSON.stringify(item)
-    //   });
-    //   result = await result.json();
-    //   localStorage.setItem(JSON.stringify(result))
-    //   history.pushState("/dashboard")
-    // }
+      });
+  }
 
-    // const handleGoogleSignInClick = async () => {
-    //   signInWithPopup(auth, provider)
-    //     .then((res) => {
-    //       setValue(res.user.email);
-    //       localStorage.setItem('email', res.user.email);
-    //       localStorage.setItem('uid', res.user.uid);
-    //       const data = {
-    //         idToken: res.user.accessToken,
-    //       };
-    //       api
-    //         .post('/login', data)
-    //         .then((response) => {
-    //           console.log('API return:', response);
-    //           const { accessToken, refreshToken, accountdb } = response.data;
-    //           const tokens = {
-    //             accessToken: accessToken,
-    //             refreshToken: refreshToken,
-    //           };
-    //           console.log('role', accountdb);
-    //           //Lưu token vào local storage
-    //           localStorage.setItem('tokens', JSON.stringify(tokens));
-    //           localStorage.setItem('role', accountdb.role || accountdb);
+  const navitems = [
+    {
+      label: (
+        <Link to="/">
+          <Home />
+          <span> Home</span>
+        </Link>
+      ),
+      key: '1',
+    },
+  ];
 
-    //           if (accountdb === 'unknown') {
-    //             window.location.href = '/sign-up';
-    //           } else if (accountdb === 'customer') {
-    //             window.location.href = '/customer/menu-creator';
-    //           } else if (accountdb.role === 'creator') {
-    //             if (accountdb.status == 1) {
-    //               window.location.href = '/creator';
-    //             } else {
-    //               window.location.href = '/pending-creator';
-    //             }
-    //           } else {
-    //             window.location.href = '/profile';
-    //           }
-    //         })
-    //         .catch((error) => {
-    //           alert('Đăng nhập thất bại rồi!');
-    //         });
-    //     })
-    //     .catch(function (error) {
-    //       console.log(error);
-    //     });
-    // };
+  const menu = [
+    { label: 'Company', key: '1' },
+    { label: 'About Us', key: '2' },
+    { label: 'Teams', key: '3' },
+    { label: 'Products', key: '4' },
+    { label: 'Blogs', key: '5' },
+    { label: 'Pricing', key: '6' },
+  ];
 
-    const navitems = [
-      {
-        label: (
-          <Link to="/">
-            <Home />
-            <span> Home</span>
-          </Link>
-        ),
-        key: '1',
-      },
-    ];
-
-    const menu = [
-      { label: 'Company', key: '1' },
-      { label: 'About Us', key: '2' },
-      { label: 'Teams', key: '3' },
-      { label: 'Products', key: '4' },
-      { label: 'Blogs', key: '5' },
-      { label: 'Pricing', key: '6' },
-    ];
-
-    const media = [
-      { label: <Link to="#">{<DribbbleOutlined />}</Link>, key: '1' },
-      { label: <Link to="#">{<TwitterOutlined />}</Link>, key: '2' },
-      { label: <Link to="#">{<InstagramOutlined />}</Link>, key: '3' },
-      { label: <Link to="#">{<PinteredOutLined />}</Link>, key: '4' },
-      { label: <Link to="#">{<GithubOutlined />}</Link>, key: '5' },
-    ];
-    return (
-      <>
-        <div className="layout-default layout-signin">
-          <Header>
-            <div className="header-col header-brand">
-              <h5>ICLEAN</h5>
-            </div>
-            <div className="header-col header-nav">
-              <Menu mode="horizontal" defaultSelectedKeys={["1"]} item={navitems}>
-                <Menu.Item key="1">
-                  <Link to="/dashboard">
-                    {template}
-                    <span> Dashboard</span>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="3">
-                  <Link to="/sign-up">
-                    {signup}
-                    <span> Đăng Ký</span>
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="4">
-                  <Link to="/sign-in">
-                    {signin}
-                    <span> Đăng Nhập</span>
-                  </Link>
-                </Menu.Item>
-              </Menu>
-            </div>
-          </Header>
-          <Content className="signin">
-            <Row gutter={[24, 0]} justify="space-around">
-              <Col
-                xs={{ span: 24, offset: 0 }}
-                lg={{ span: 6, offset: 2 }}
-                md={{ span: 12 }}
+  const media = [
+    { label: <Link to="#">{<DribbbleOutlined />}</Link>, key: '1' },
+    { label: <Link to="#">{<TwitterOutlined />}</Link>, key: '2' },
+    { label: <Link to="#">{<InstagramOutlined />}</Link>, key: '3' },
+    { label: <Link to="#">{<PinteredOutLined />}</Link>, key: '4' },
+    { label: <Link to="#">{<GithubOutlined />}</Link>, key: '5' },
+  ];
+  return (
+    <>
+      <div className="layout-default layout-signin">
+        <Header>
+          <div className="header-col header-brand">
+            <h5>ICLEAN</h5>
+          </div>
+          <div className="header-col header-nav">
+            <Menu mode="horizontal" defaultSelectedKeys={["1"]} item={navitems}>
+              <Menu.Item key="1">
+                <Link to="/dashboard">
+                  {template}
+                  <span> Dashboard</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="3">
+                <Link to="/sign-up">
+                  {signup}
+                  <span> Đăng Ký</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="4">
+                <Link to="/sign-in">
+                  {signin}
+                  <span> Đăng Nhập</span>
+                </Link>
+              </Menu.Item>
+            </Menu>
+          </div>
+        </Header>
+        <Content className="signin">
+          <Row gutter={[24, 0]} justify="space-around">
+            <Col
+              xs={{ span: 24, offset: 0 }}
+              lg={{ span: 6, offset: 2 }}
+              md={{ span: 12 }}
+            >
+              <Title className="mb-15">Đăng Nhập</Title>
+              <Title className="font-regular text-muted" level={5}>
+                Nhập email và mật khẩu của bạn
+              </Title>
+              <Form
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                layout="vertical"
+                className="row-col"
               >
-                <Title className="mb-15">Đăng Nhập</Title>
-                <Title className="font-regular text-muted" level={5}>
-                  Nhập email và mật khẩu của bạn
-                </Title>
-                <Form
-                  onFinish={onFinish}
-                  onFinishFailed={onFinishFailed}
-                  layout="vertical"
-                  className="row-col"
+                <Form.Item
+                  className="username"
+                  label="Email"
+                  name="email"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your email!",
+                    },
+                  ]}
                 >
-                  <Form.Item
-                    className="username"
-                    label="Email"
-                    name="email"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your email!",
-                      },
-                    ]}
-                  >
-                    <Input value={email} placeholder="Email" onChange={handleEmail} />
-                  </Form.Item>
+                  <Input value={email} placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                </Form.Item>
 
-                  <Form.Item
-                    className="username"
-                    label="Password"
-                    name="password"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your password!",
-                      },
-                    ]}
-                  >
-                    <Input value={password} placeholder="Password" onChange={handlePassword} />
-                  </Form.Item>
+                <Form.Item
+                  className="username"
+                  label="Password"
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your password!",
+                    },
+                  ]}
+                >
+                  <Input value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                </Form.Item>
 
-                  {/* <Form.Item
+                {/* <Form.Item
                     name="remember"
                     className="aligin-center"
                     valuePropName="checked"
@@ -345,37 +258,37 @@ const SignIn = () => {
                     Remember me
                   </Form.Item> */}
 
-                  <Form.Item>
-                    <Button
-                      type="primary"
-                      htmlType="submit"
-                      style={{ width: "100%", backgroundColor: "#AD82D9", borderColor: "#AD82D9" }}
-                      onClick={handleApi}
-                    >
-                      SIGN IN
-                    </Button>
-                  </Form.Item>
-                  <p className="font-semibold text-muted">
-                    Don't have an account?{" "}
-                    <Link to="/sign-up" className="text-dark font-bold">
-                      Sign Up
-                    </Link>
-                  </p>
-                </Form>
-              </Col>
-              <Col
-                className="sign-img"
-                style={{ padding: 12 }}
-                xs={{ span: 24 }}
-                lg={{ span: 12 }}
-                md={{ span: 12 }}
-              >
-                <img src={signinbg} alt="" />
-              </Col>
-            </Row>
-          </Content>
-          <Footer>
-            {/* <Menu mode="horizontal">
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ width: "100%", backgroundColor: "#AD82D9", borderColor: "#AD82D9" }}
+                    onClick={handleApi}
+                  >
+                    Đăng nhập
+                  </Button>
+                </Form.Item>
+                <p className="font-semibold text-muted">
+                  Don't have an account?{" "}
+                  <Link to="/sign-up" className="text-dark font-bold">
+                    Sign Up
+                  </Link>
+                </p>
+              </Form>
+            </Col>
+            <Col
+              className="sign-img"
+              style={{ padding: 12 }}
+              xs={{ span: 24 }}
+              lg={{ span: 12 }}
+              md={{ span: 12 }}
+            >
+              <img src={signinbg} alt="" />
+            </Col>
+          </Row>
+        </Content>
+        <Footer>
+          {/* <Menu mode="horizontal">
               <Menu.Item>Company</Menu.Item>
               <Menu.Item>About Us</Menu.Item>
               <Menu.Item>Teams</Menu.Item>
@@ -383,41 +296,40 @@ const SignIn = () => {
               <Menu.Item>Blogs</Menu.Item>
               <Menu.Item>Pricing</Menu.Item>
             </Menu> */}
-            <Menu mode="horizontal" items={menu} />
-            <Menu mode="horizontal" className="menu-nav-social">
-              <Menu.Item>
-                <Link to="#">{<DribbbleOutlined />}</Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to="#">{<TwitterOutlined />}</Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to="#">{<InstagramOutlined />}</Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to="#">
-                  <svg
-                    width="18"
-                    height="18"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 512 512"
-                  >
-                    <path d="M496 256c0 137-111 248-248 248-25.6 0-50.2-3.9-73.4-11.1 10.1-16.5 25.2-43.5 30.8-65 3-11.6 15.4-59 15.4-59 8.1 15.4 31.7 28.5 56.8 28.5 74.8 0 128.7-68.8 128.7-154.3 0-81.9-66.9-143.2-152.9-143.2-107 0-163.9 71.8-163.9 150.1 0 36.4 19.4 81.7 50.3 96.1 4.7 2.2 7.2 1.2 8.3-3.3.8-3.4 5-20.3 6.9-28.1.6-2.5.3-4.7-1.7-7.1-10.1-12.5-18.3-35.3-18.3-56.6 0-54.7 41.4-107.6 112-107.6 60.9 0 103.6 41.5 103.6 100.9 0 67.1-33.9 113.6-78 113.6-24.3 0-42.6-20.1-36.7-44.8 7-29.5 20.5-61.3 20.5-82.6 0-19-10.2-34.9-31.4-34.9-24.9 0-44.9 25.7-44.9 60.2 0 22 7.4 36.8 7.4 36.8s-24.5 103.8-29 123.2c-5 21.4-3 51.6-.9 71.2C65.4 450.9 0 361.1 0 256 0 119 111 8 248 8s248 111 248 248z"></path>
-                  </svg>
-                </Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link to="#">{<GithubOutlined />}</Link>
-              </Menu.Item>
-            </Menu>
-            <p className="copyright">
-              {" "}
-              Copyright © 2023 ICLEAN by <a href="#pablo">ICLEAN Team</a>.{" "}
-            </p>
-          </Footer>
-        </div>
-      </>
-    );
-  // }
+          <Menu mode="horizontal" items={menu} />
+          <Menu mode="horizontal" className="menu-nav-social">
+            <Menu.Item>
+              <Link to="#">{<DribbbleOutlined />}</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="#">{<TwitterOutlined />}</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="#">{<InstagramOutlined />}</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="#">
+                <svg
+                  width="18"
+                  height="18"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                >
+                  <path d="M496 256c0 137-111 248-248 248-25.6 0-50.2-3.9-73.4-11.1 10.1-16.5 25.2-43.5 30.8-65 3-11.6 15.4-59 15.4-59 8.1 15.4 31.7 28.5 56.8 28.5 74.8 0 128.7-68.8 128.7-154.3 0-81.9-66.9-143.2-152.9-143.2-107 0-163.9 71.8-163.9 150.1 0 36.4 19.4 81.7 50.3 96.1 4.7 2.2 7.2 1.2 8.3-3.3.8-3.4 5-20.3 6.9-28.1.6-2.5.3-4.7-1.7-7.1-10.1-12.5-18.3-35.3-18.3-56.6 0-54.7 41.4-107.6 112-107.6 60.9 0 103.6 41.5 103.6 100.9 0 67.1-33.9 113.6-78 113.6-24.3 0-42.6-20.1-36.7-44.8 7-29.5 20.5-61.3 20.5-82.6 0-19-10.2-34.9-31.4-34.9-24.9 0-44.9 25.7-44.9 60.2 0 22 7.4 36.8 7.4 36.8s-24.5 103.8-29 123.2c-5 21.4-3 51.6-.9 71.2C65.4 450.9 0 361.1 0 256 0 119 111 8 248 8s248 111 248 248z"></path>
+                </svg>
+              </Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="#">{<GithubOutlined />}</Link>
+            </Menu.Item>
+          </Menu>
+          <p className="copyright">
+            {" "}
+            Copyright © 2023 ICLEAN by <a href="#pablo">ICLEAN Team</a>.{" "}
+          </p>
+        </Footer>
+      </div>
+    </>
+  );
 };
 export default SignIn;

@@ -1,24 +1,10 @@
-import {
-  Row,
-  Col,
-  Card,
-  Radio,
-  Table,
-  Upload,
-  message,
-  Progress,
-  Button,
-  Avatar,
-  Typography,
-  Tabs,
-  Modal,
-} from "antd";
+import { Row, Col, Card, Radio, Table, Upload, message, Progress, Button, Avatar, Typography, Tabs, Modal, Input } from "antd";
 
-import { ToTopOutlined } from "@ant-design/icons";
+import { ToTopOutlined, SearchOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import PickDate from "../components/chart/PickDate";
 import React, { useEffect, useState } from 'react';
-import {ModalBo} from "../components/Modal/ModalB"
+// import BookingModal  from "../components/modals/BookingModal"
 
 // Images
 import ava1 from "../assets/images/logo-shopify.svg";
@@ -33,26 +19,31 @@ import face4 from "../assets/images/face-4.jpg";
 import face5 from "../assets/images/face-5.jpeg";
 import face6 from "../assets/images/face-6.jpeg";
 import pencil from "../assets/images/pencil.svg";
+import { api } from "../services/axios";
 
 const { Title } = Typography;
 
-// const formProps = {
-//   name: "file",
-//   action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-//   headers: {
-//     authorization: "authorization-text",
-//   },
-//   onChange(info) {
-//     if (info.file.status !== "uploading") {
-//       console.log(info.file, info.fileList);
-//     }
-//     if (info.file.status === "done") {
-//       message.success(`${info.file.name} file uploaded successfully`);
-//     } else if (info.file.status === "error") {
-//       message.error(`${info.file.name} file upload failed.`);
-//     }
-//   },
-// };
+
+const Booking = () => {
+  const [openModal, setOpenModal] = useState(false);
+}
+const formProps = {
+  name: "file",
+  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+  headers: {
+    authorization: "authorization-text",
+  },
+  onChange(info) {
+    if (info.file.status !== "uploading") {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === "done") {
+      message.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+};
 
 // table code start
 const columns = [
@@ -1571,6 +1562,21 @@ function Tables() {
   // const [dataSource, setDataSource] = useState([])
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Gọi API ở đây
+    fetch(`https://iclean.azurewebsites.net/api/v1/booking?page=${page}&size=${pageSize}&sort=renterName_asc`)
+      .then((response) => response.json())
+      .then((apiData) => {
+        setData(apiData); // Cập nhật dữ liệu sau khi gọi API thành công
+        setLoading(false); // Đã tải xong
+      })
+      .catch((error) => {
+        console.error('Lỗi khi gọi API:', error);
+        setLoading(false); // Đã tải xong, có lỗi
+      });
+  }, []); // [] đảm bảo useEffect chỉ gọi một lần khi component được tạo
 
   // useEffect(() => {
   //   setLoading(true)
@@ -1606,7 +1612,7 @@ function Tables() {
   //   console.log('Clicked cancel button');
   //   setOpen(false);
   // };
-//-------------------------------------------------------------------------------
+  //-------------------------------------------------------------------------------
   const [modalInfo, setModalInfo] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [show, setShow] = useState(false);
@@ -1644,6 +1650,15 @@ function Tables() {
     )
   }
 
+  const [openModal, setOpenModal] = useState(false);
+
+  // const [BookingData, setBookingData] = useState({
+  //   name: "",
+  //   title: "",
+  //   description: "",
+  //   image: "",
+  //   additionalNotes: "",
+  // });
 
   return (
     <>
@@ -1657,101 +1672,117 @@ function Tables() {
               title="Danh Sách Yêu Cầu"
             >
               {/* <PickDate /> */}
-              <div className="table-responsive">
-                <Tabs defaultActiveKey="1" style={{ paddingLeft: '25px' }}>
-                  <Tabs.TabPane tab="Tất cả" key="1">
-                    <Table
-                      loading={loading}
-                      columns={columns}
-                      dataSource={data}
-                      rowEvents={rowEvents}
-                      pagination={{
-                        current: page,
-                        pageSize: pageSize,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setPageSize(pageSize)
-                          //make the api call here with page size
-                        }
-                      }}
-                      className="ant-border-space"
-                    />
-                  </Tabs.TabPane>
-                  <Tabs.TabPane tab="Chưa duyệt" key="2">
-                    <Table
-                      loading={loading}
-                      columns={columns}
-                      dataSource={dataP}
-                      // onClick={showModal}
-                      pagination={{
-                        current: page,
-                        pageSize: pageSize,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setPageSize(pageSize)
-                        }
-                      }}
-                      className="ant-border-space"
-                    />
-                  </Tabs.TabPane>
-                  <Tabs.TabPane tab="Từ chối" key="3">
-                    <Table
-                      loading={loading}
-                      columns={columns}
-                      dataSource={dataR}
-                      // onClick={showModal}
-                      pagination={{
-                        current: page,
-                        pageSize: pageSize,
-                        onChange: (page, pageSize) => {
-                          setPage(page);
-                          setPageSize(pageSize)
-                        }
-                      }}
-                      className="ant-border-space"
-                    />
-                  </Tabs.TabPane>
-                </Tabs>
-              </div>
-            </Card>
 
-            {/* <Card
-              bordered={false}
-              className="criclebox tablespace mb-24"
-              title="Projects Table"
-              extra={
-                <>
-                  <Radio.Group onChange={onChange} defaultValue="all">
-                    <Radio.Button value="all">All</Radio.Button>
-                    <Radio.Button value="online">ONLINE</Radio.Button>
-                    <Radio.Button value="store">STORES</Radio.Button>
-                  </Radio.Group>
-                </>
-              }
-            >
+
               <div className="table-responsive">
-                <Table
-                  columns={project}
-                  dataSource={dataproject}
-                  pagination={false}
-                  className="ant-border-space"
-                />
-              </div>
-              <div className="uploadfile pb-15 shadow-none">
-                <Upload {...formProps}>
-                  <Button
-                    type="dashed"
-                    className="ant-full-box"
-                    icon={<ToTopOutlined />}
-                  >
-                    Click to Upload
-                  </Button>
-                </Upload>
-              </div>
-            </Card> */}
-          </Col>
-        </Row>
-      </div>
+                <div>
+                  <Tabs defaultActiveKey="1" style={{ paddingLeft: '25px' }}>
+                    <Tabs.TabPane tab="Tất cả" key="1">
+                      <Table
+                        loading={loading}
+                        columns={columns}
+                        dataSource={data}
+                        rowEvents={rowEvents}
+                        pagination={{
+                          current: page,
+                          pageSize: pageSize,
+                          onChange: (page, pageSize) => {
+                            setPage(page);
+                            setPageSize(pageSize)
+                            //make the api call here with page size
+                          }
+                        }}
+                        className="ant-border-space"
+                      />
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="Chưa duyệt" key="2">
+                      <Table
+                        loading={loading}
+                        columns={columns}
+                        dataSource={dataP}
+                        // onClick={showModal}
+                        pagination={{
+                          current: page,
+                          pageSize: pageSize,
+                          onChange: (page, pageSize) => {
+                            setPage(page);
+                            setPageSize(pageSize)
+                          }
+                        }}
+                        className="ant-border-space"
+                      />
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="Từ chối" key="3">
+                      <Table
+                        loading={loading}
+                        columns={columns}
+                        dataSource={dataR}
+                        // onClick={showModal}
+                        pagination={{
+                          current: page,
+                          pageSize: pageSize,
+                          onChange: (page, pageSize) => {
+                            setPage(page);
+                            setPageSize(pageSize)
+                          }
+                        }}
+                        className="ant-border-space"
+                      />
+                    </Tabs.TabPane>
+                  </Tabs>
+                </div>
+
+                <div>
+                  <Input className="header-search" placeholder="Search..." prefix={<SearchOutlined />} />
+                </div>
+            </div>
+
+            {/* <BookingModal
+                open={openModal}
+                onClose={() => setOpenModal(false)}
+                examData={examData}
+                selectedServices={selectedServices}
+              /> */}
+          </Card>
+
+          <Card
+            bordered={false}
+            className="criclebox tablespace mb-24"
+            title="Projects Table"
+            extra={
+              <>
+                <Radio.Group onChange={onChange} defaultValue="all">
+                  <Radio.Button value="all">All</Radio.Button>
+                  <Radio.Button value="online">ONLINE</Radio.Button>
+                  <Radio.Button value="store">STORES</Radio.Button>
+                </Radio.Group>
+              </>
+            }
+          >
+            <div className="table-responsive">
+              <Table
+                columns={project}
+                dataSource={dataproject}
+                pagination={false}
+                className="ant-border-space"
+              />
+            </div>
+            <div className="uploadfile pb-15 shadow-none">
+              <Upload {...formProps}>
+                <Button
+                  type="dashed"
+                  className="ant-full-box"
+                  icon={<ToTopOutlined />}
+                >
+                  Click to Upload
+                </Button>
+              </Upload>
+            </div>
+          </Card>
+
+        </Col>
+      </Row>
+    </div >
     </>
   );
 }

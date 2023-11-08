@@ -21,46 +21,6 @@ const data = [
       address: "Quận 8",
       status: "COMPLETE",
       date: "23/09/2023",
-      // name: (
-      //   <>
-      //     <Avatar.Group>
-      //       <Avatar
-      //         className="shape-avatar"
-      //         shape="square"
-      //         size={40}
-      //         src={face2}
-      //       ></Avatar>
-      //       <div className="avatar-info">
-      //         <Title level={5}>Mai Thanh Tỷ</Title>
-      //         <p>mikety@gmail.com</p>
-      //       </div>
-      //     </Avatar.Group>{" "}
-      //   </>
-      // ),
-      // function: (
-      //   <>
-      //     <div className="author-info">
-      //       <Title level={5}>Dọn Dẹp</Title>
-      //       <p>Quận 8</p>
-      //     </div>
-      //   </>
-      // ),
-  
-      // status: (
-      //   <>
-      //     <Button type="primary" className="tag-primary">
-      //       COMPLETE
-      //     </Button>
-      //   </>
-      // ),
-      // employed: (
-      //   <>
-      //     <div className="ant-employed">
-      //       <span>23/09/2023</span>
-      //       <a href="#pablo">Edit</a>
-      //     </div>
-      //   </>
-      // ),
     },
   
     {
@@ -72,44 +32,6 @@ const data = [
       address: "Quận 8",
       status: "COMPLETE",
       date: "23/09/2023",
-      // name: (
-      //   <>
-      //     <Avatar.Group>
-      //       <Avatar
-      //         className="shape-avatar"
-      //         shape="square"
-      //         size={40}
-      //         src={face3}
-      //       ></Avatar>
-      //       <div className="avatar-info">
-      //         <Title level={5}>Lê Kim An</Title>
-      //         <p>Anbabie@gmail.com</p>
-      //       </div>
-      //     </Avatar.Group>{" "}
-      //   </>
-      // ),
-      // function: (
-      //   <>
-      //     <div className="author-info">
-      //       <Title level={5}>Dọn Dẹp</Title>
-      //       <p>Quận 1</p>
-      //     </div>
-      //   </>
-      // ),
-  
-      // status: (
-      //   <>
-      //     <Button className="tag-badge">REJECT</Button>
-      //   </>
-      // ),
-      // employed: (
-      //   <>
-      //     <div className="ant-employed">
-      //       <span>05/10/2023</span>
-      //       <a href="#pablo">Edit</a>
-      //     </div>
-      //   </>
-      // ),
     },
   
     {
@@ -121,46 +43,6 @@ const data = [
       address: "Quận 8",
       status: "COMPLETE",
       date: "23/09/2023",
-      // name: (
-      //   <>
-      //     <Avatar.Group>
-      //       <Avatar
-      //         className="shape-avatar"
-      //         shape="square"
-      //         size={40}
-      //         src={face}
-      //       ></Avatar>
-      //       <div className="avatar-info">
-      //         <Title level={5}>Nguyễn Mỹ Kim</Title>
-      //         <p>mykim12@mail.com</p>
-      //       </div>
-      //     </Avatar.Group>{" "}
-      //   </>
-      // ),
-      // function: (
-      //   <>
-      //     <div className="author-info">
-      //       <Title level={5}>Lau Kính</Title>
-      //       <p>Quận 3</p>
-      //     </div>
-      //   </>
-      // ),
-  
-      // status: (
-      //   <>
-      //     <Button type="primary" className="tag-primary">
-      //       COMPLETE
-      //     </Button>
-      //   </>
-      // ),
-      // employed: (
-      //   <>
-      //     <div className="ant-employed">
-      //       <span>03/10/2023</span>
-      //       <a href="#pablo">Edit</a>
-      //     </div>
-      //   </>
-      // ),
     },
     {
       key: "4",
@@ -171,44 +53,6 @@ const data = [
       address: "Quận 8",
       status: "COMPLETE",
       date: "23/09/2023",
-      // name: (
-      //   <>
-      //     <Avatar.Group>
-      //       <Avatar
-      //         className="shape-avatar"
-      //         shape="square"
-      //         size={40}
-      //         src={face4}
-      //       ></Avatar>
-      //       <div className="avatar-info">
-      //         <Title level={5}>Nguyễn Thiên Hương</Title>
-      //         <p>huongcute@gmail.com</p>
-      //       </div>
-      //     </Avatar.Group>{" "}
-      //   </>
-      // ),
-      // function: (
-      //   <>
-      //     <div className="author-info">
-      //       <Title level={5}>Dọn Dẹp</Title>
-      //       <p>Quận 1</p>
-      //     </div>
-      //   </>
-      // ),
-  
-      // status: (
-      //   <>
-      //     <Button className="tag-pen">PENDING</Button>
-      //   </>
-      // ),
-      // employed: (
-      //   <>
-      //     <div className="ant-employed">
-      //       <span>01/10/2023</span>
-      //       <a href="#pablo">Edit</a>
-      //     </div>
-      //   </>
-      // ),
     },
     {
       key: "5",
@@ -219,44 +63,6 @@ const data = [
       address: "Quận 8",
       status: "COMPLETE",
       date: "23/09/2023",
-      // name: (
-      //   <>
-      //     <Avatar.Group>
-      //       <Avatar
-      //         className="shape-avatar"
-      //         shape="square"
-      //         size={40}
-      //         src={face5}
-      //       ></Avatar>
-      //       <div className="avatar-info">
-      //         <Title level={5}>Nhật Linh</Title>
-      //         <p>linhwibu@gmail.com</p>
-      //       </div>
-      //     </Avatar.Group>{" "}
-      //   </>
-      // ),
-      // function: (
-      //   <>
-      //     <div className="author-info">
-      //       <Title level={5}>Sửa Máy Lạnh</Title>
-      //       <p>Bình Thạnh</p>
-      //     </div>
-      //   </>
-      // ),
-  
-      // status: (
-      //   <>
-      //     <Button className="tag-badge">REJECT</Button>
-      //   </>
-      // ),
-      // employed: (
-      //   <>
-      //     <div className="ant-employed">
-      //       <span>23/09/2023</span>
-      //       <a href="#pablo">Edit</a>
-      //     </div>
-      //   </>
-      // ),
     },
   
     {
