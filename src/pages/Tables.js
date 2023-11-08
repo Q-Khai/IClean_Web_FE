@@ -1562,21 +1562,24 @@ function Tables() {
   // const [dataSource, setDataSource] = useState([])
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
-  useEffect(() => {
-    // Gọi API ở đây
-    fetch(`https://iclean.azurewebsites.net/api/v1/booking?page=${page}&size=${pageSize}&sort=renterName_asc`)
-      .then((response) => response.json())
-      .then((apiData) => {
-        setData(apiData); // Cập nhật dữ liệu sau khi gọi API thành công
-        setLoading(false); // Đã tải xong
-      })
-      .catch((error) => {
-        console.error('Lỗi khi gọi API:', error);
-        setLoading(false); // Đã tải xong, có lỗi
-      });
-  }, []); // [] đảm bảo useEffect chỉ gọi một lần khi component được tạo
+
+  // hiện đang bị lỗi 
+  // useEffect(() => {
+  //   // Gọi API ở đây
+  //   fetch(`https://iclean.azurewebsites.net/api/v1/booking?page=${page}&size=${pageSize}&sort=renterName_asc`)
+  //     .then((response) => response.json())
+  //     .then((apiData) => {
+  //       setData(apiData); // Cập nhật dữ liệu sau khi gọi API thành công
+  //       setLoading(false); // Đã tải xong
+  //     })
+  //     .catch((error) => {
+  //       console.error('Lỗi khi gọi API:', error);
+  //       setLoading(false); // Đã tải xong, có lỗi
+  //     });
+  // }, []); // [] đảm bảo useEffect chỉ gọi một lần khi component được tạo
+
 
   // useEffect(() => {
   //   setLoading(true)
