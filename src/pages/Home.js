@@ -132,29 +132,29 @@ function Home() {
   ];
   const count = [
     {
-      today: "Tổng doanh thu",
-      title: "153,287,000",
+      today: "Tổng doanh thu tháng",
+      title: "83,287,000",
       persent: "+30%",
       icon: dollor,
       bnb: "bnb2",
     },
     {
       today: "Tổng người dùng",
-      title: "3,200",
+      title: "1,268",
       persent: "+20%",
       icon: profile,
       bnb: "bnb2",
     },
     {
-      today: "Người dùng mới",
-      title: "+1,200",
+      today: "Người dùng mới theo tháng",
+      title: "+275",
       persent: "-20%",
       icon: heart,
       bnb: "redtext",
     },
     {
-      today: "Đơn hàng",
-      title: "13,200",
+      today: "Đơn hàng thành công",
+      title: "1,650",
       persent: "10%",
       icon: cart,
       bnb: "bnb2",
