@@ -5,6 +5,9 @@ import signinbg from "../assets/images/panner.png";
 import { PinteredOutLined, Home } from '../components/Icons';
 import { DribbbleOutlined, TwitterOutlined, InstagramOutlined, GithubOutlined } from "@ant-design/icons";
 import { api } from "../services/axios";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 // function onChange(checked) {
 //   console.log(`switch to ${checked}`);
 // }
@@ -131,7 +134,17 @@ const SignIn = () => {
           } else {
             console.error("Bạn không có quyền truy cập vào trang này");
             setError("Bạn không có quyền truy cập vào trang này");
-            alert('Tài khoản bạn không có quyền truy cập vào trang này!!');
+            // alert('Tài khoản bạn không có quyền truy cập vào trang này!!');
+            toast.error("Tài khoản bạn không có quyền truy cập vào trang này!!", {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
           }
         } else {
           console.error("Account information is missing.");
@@ -141,7 +154,17 @@ const SignIn = () => {
       .catch((error) => {
         console.error("Đăng nhập không thành công:", error);
         setError("Đăng nhập không thành công");
-        alert('Đăng nhập thất bại rồi!');
+        // alert('Đăng nhập thất bại!!');
+        toast.error("Đăng nhập thất bại!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
 
       });
   }
