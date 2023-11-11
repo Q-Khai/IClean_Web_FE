@@ -116,7 +116,7 @@ const SignIn = () => {
     //ngăn reload trang
     e.preventDefault();
     api
-      .post(`/api/v1/auth`,
+      .post(`/auth`,
         {
           username: email,
           password: password
