@@ -1555,15 +1555,35 @@ const dataproject = [
 ];
 
 
-function Tables() {
+const Tables = () => {
 
   //----------------call API
+  // const navigate = useNavigate();
   const [loading, setLoading] = useState(false)
   // const [dataSource, setDataSource] = useState([])
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   // const [data, setData] = useState([]);
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await api.get("/booking");
+  //       const filterBookings = response.data.data.content.bookingStatus(
+  //         (booking) =>
+  //           booking.bookingStatus !== "Đã nhận" && booking.bookingStatus !== "Đang đợi"
+  //       );
+  //       setCustomerList(filterBookings);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 850);
+  //   fetchData();
+  // });
 
   // hiện đang bị lỗi 
   // useEffect(() => {
